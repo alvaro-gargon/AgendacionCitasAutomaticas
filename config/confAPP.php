@@ -21,6 +21,7 @@ $controller=[
 $view=[
     'layout' => 'view/Layout.php',
     'inicioPublico' => 'view/vInicioPublico.php',
-    'vistaPrincipal' => 'view/vVistaPrincipal.php'
+    'vistaPrincipal' => 'view/vVistaPrincipal.php',
+    'Formulario' => 'view/vFormulario.php'
 ];
 ?>
