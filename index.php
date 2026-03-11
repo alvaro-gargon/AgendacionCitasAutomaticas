@@ -1,0 +1,18 @@
+<?php
+        /* Nombre: 
+        Alvaro Garcia Gonzalez
+        Alejandro de la Huerga 
+        * Fecha: 11/03/2026
+        * Uso:  index de la aplicacion*/
+        
+        //incluyo la configuracion 
+        require_once 'config/confAPP.php';
+        require_once 'config/confDBPDO.php';
+        //inicio la sesion
+        session_start();
+        
+        if(!isset($_SESSION['paginaEnCurso'])){
+            $_SESSION['paginaEnCurso']='inicioPublico';
+        }
+        require_once $controller[$_SESSION['paginaEnCurso']];
+    ?>
