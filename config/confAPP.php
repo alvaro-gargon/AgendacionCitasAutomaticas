@@ -13,11 +13,14 @@ require_once 'model/DBPDO.php';
 
 //array para cargar los archivos del controlador
 $controller=[
-
+    'inicioPublico'=>'controller/cInicioPublico.php',
+    'vistaPrincipal' => 'controller/cVistaPrincipal.php'
 ];
 
 //array para cargar los archivos de la vista
 $view=[
-
+    'layout' => 'view/Layout.php',
+    'inicioPublico' => 'view/vInicioPublico.php',
+    'vistaPrincipal' => 'view/vVistaPrincipal.php'
 ];
 ?>
