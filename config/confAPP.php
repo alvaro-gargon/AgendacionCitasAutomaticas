@@ -14,14 +14,15 @@ require_once 'model/DBPDO.php';
 //array para cargar los archivos del controlador
 $controller=[
     'inicioPublico'=>'controller/cInicioPublico.php',
-    'vistaPrincipal' => 'controller/cVistaPrincipal.php'
+    'vistaPrincipal' => 'controller/cVistaPrincipal.php',
+    'formularioCitas' => 'controller/cFormularioCitas.php'
 ];
 
 //array para cargar los archivos de la vista
 $view=[
-    'layout' => 'view/Layout.php',
+    'layout' => 'view/vLayout.php',
     'inicioPublico' => 'view/vInicioPublico.php',
     'vistaPrincipal' => 'view/vVistaPrincipal.php',
-    'Formulario' => 'view/vFormulario.php'
+    'formularioCitas' => 'view/vFormularioCitas.php'
 ];
 ?>
