@@ -4,7 +4,7 @@
     </p>
     <p>
         <label>Introduce fecha y hora</label><br>
-        <input class="obligatorio" type="datetime" name="fechayhora">
+        <input class="obligatorio" type="datetime-local" name="fechayhora">
         <p class="error"><?php echo($aErrores['fechayhora'])?></p>
     </p>
     <p>
