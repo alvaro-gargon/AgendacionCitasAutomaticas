@@ -1,6 +1,6 @@
 <?php
-    
-    define('DNS', 'mysql:host=10.199.11.252;dbname=DBAGGDWESAplicacionFinal');//varibale para el entorno de clase
+    //archivo que sire para conectarse a la base de datos
+    define('DNS', 'mysql:host=localhost;dbname=agendacioncitasautomaticasdb');
     define('USERNAME', 'userAGGDWESAplicacionFinal');
     define('PASSWORD', 'paso');
 
