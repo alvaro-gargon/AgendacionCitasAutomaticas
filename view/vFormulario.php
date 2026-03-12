@@ -1,5 +1,5 @@
-<button name="VOLVER">Volver</button>
-<form action="index.php?action=guardar" method="POST">
+<button name="VOLVER" class="btn btn-primary">Volver</button>
+<form action="index.php?action=guardar" method="POST" class="p-5 border border-primary">
     <p>
         <label for="fechaInicio">Fecha inicio:</label>
         <input class="obligatorio" type="date" name="fechaInicio" value="<?php echo $aRespuestas['fechaInicio'] ?>" required>
@@ -40,6 +40,6 @@
         
     </p>
     <p>
-        <button type="submit" name="GUARDAR">Guardar</button>
+        <button type="submit" name="GUARDAR"class="btn btn-success">Guardar</button>
     </p>
 </form>
