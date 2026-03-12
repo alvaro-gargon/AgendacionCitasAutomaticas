@@ -78,7 +78,7 @@ class CalendarModel
 
     public function crearEvento($datos)
     {
-        $calendarioDestino=$datos['correos[]'];
+        $calendarioDestino=$datos['correos'];
         $eventData = [
             'summary' => $datos['asunto'],
             'description' => $datos['observaciones'],
