@@ -50,9 +50,9 @@ use Google\Service\Calendar;
     
     if($entradaOK){
         CalendarModel::procesarCita();
-        $_SESSION['paginaEnCurso']='vistaPrincipal';
-        header('Location: index.php');
-        exit;
+        //$_SESSION['paginaEnCurso']='vistaPrincipal';
+        //header('Location: index.php');
+        //exit;
     }
     require_once $view['layout'];
 ?>
