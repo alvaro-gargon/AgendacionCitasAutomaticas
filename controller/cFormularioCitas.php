@@ -7,7 +7,7 @@
      * Boton cancelar que te devuelve al login si el usuario decide no registrarse
      */
     if(isset($_REQUEST['CANCELAR'])){
-        $_SESSION['paginaEnCurso']='login';
+        $_SESSION['paginaEnCurso']='vistaPrincipal';
         header('Location: index.php');
         exit;
     }
