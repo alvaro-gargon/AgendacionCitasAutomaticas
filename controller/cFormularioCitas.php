@@ -41,7 +41,13 @@ use Google\Service\Calendar;
      * acciones que pasaran si el usuario intenta registrarse
      */
     if(isset($_REQUEST['GUARDAR'])){
-        //validamos los diferentes campos del formulario
+        //validamos los diferentes campos del formularioç
+
+        if(empty($_REQUEST['correos[]'])){
+            $aErrores['asunto']="Debes seleccionar al menos un usuario";
+            $entradaOK=false;
+        }
+
         $aErrores['fechaInicio']= validacionFormularios::validarFecha($_REQUEST['fechaInicio'],obligatorio:1);//validacion sintactica del campo fechayhora
         $aErrores['horaInicio']=validacionFormularios::comprobarAlfaNumerico($_REQUEST['horaInicio'],obligatorio:1);//validación de la hora
         $aErrores['fechaFin']= validacionFormularios::validarFecha($_REQUEST['fechaFin'],obligatorio:1);//validacion sintactica del campo fechayhora

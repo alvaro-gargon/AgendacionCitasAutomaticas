@@ -78,8 +78,8 @@ class CalendarModel
 
     public function crearEvento($datos)
     {
-
-        $event = new Google_Service_Calendar_Event([
+        $calendarioDestino=$datos['correos[]'];
+        $eventData = [
             'summary' => $datos['asunto'],
             'description' => $datos['observaciones'],
             // Formateamos las fechas al formato de Google Calendar (RFC3339) Ex: 2025-10-25T15:30:00.
@@ -93,10 +93,20 @@ class CalendarModel
             ],
 
             
-        ]);
+        ];
+        $event = new Google_Service_Calendar_Event($eventData);
+        $idsCreados =[];
+        foreach($calendarioDestino as $emailId){
+            try{
+                $resultado = $this->service->events->insert($emailId,$event);
+                $idsCreados[]=$resultado->getId();
+            }catch (Exception $e){
+                throw new Exception("Error en el calendario $emailId: " . $e->getMessage());
+            }
+        }
 
         // Send updates manda un aviso a todos los invitados.
-        return $this->service->events->insert($this->calendarId, $event);
+        return $idsCreados;
     }
 
     /**
