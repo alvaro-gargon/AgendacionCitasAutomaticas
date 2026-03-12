@@ -91,8 +91,11 @@ class CalendarModel
                 'dateTime' => $datos['fechaFin'] . 'T' . $datos['horaFin'] . ':00',
                 'timeZone' => 'Europe/Madrid'
             ],
+
+            
         ]);
 
+        // Send updates manda un aviso a todos los invitados.
         return $this->service->events->insert($this->calendarId, $event);
     }
 

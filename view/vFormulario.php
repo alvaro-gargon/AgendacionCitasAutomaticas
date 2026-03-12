@@ -30,6 +30,15 @@
         <p class="error"><?php echo($aErrores['observaciones'])?></p>
     </p>
     <p>
+        <label for="Usuarios">Usuarios: (Indica a que personas quieres agendarle la cita)</label></br>
+
+        <label for="alejandrohuerga">alejandrohuerga</label>
+        <input type="checkbox" id="alejandrohuerga" name="correos[]" value="alejandrodelahuerga@gmail.com">
+        <label for="webqinamical">webqinamical</label>
+        <input type="checkbox" id="webqinamical" name="correos[]" value="qinamical@gmail.com">
+        
+    </p>
+    <p>
         <button name="CANCELAR">Cancelar</button>
         <button type="submit" name="GUARDAR">Guardar</button>
     </p>
