@@ -80,8 +80,14 @@ class CalendarModel {
             'summary' => $datos['asunto'],
             'description' => $datos['observaciones'],
             // Formateamos las fechas al formato de Google Calendar (RFC3339) Ex: 2025-10-25T15:30:00.
-            'start' => ['dateTime' => $datos['fecha'] . 'T' . $datos['hora'] . ':00'],
-            'end' => ['dateTime' => $datos['fecha'] . 'T' . date('H:i', strtotime($datos['hora'] . ' +1 hour')) . ':00'],
+            'start' => [
+                'dateTime' => $datos['fecha'] . 'T' . $datos['hora'] . ':00',
+                'timeZone' => 'Europe/Madrid'
+            ],
+            'end' => [
+                'dateTime' => $datos['fecha'] . 'T' . date('H:i', strtotime($datos['hora'] . ' +1 hour')) . ':00',
+                'timeZone' => 'Europe/Madrid'
+            ],
         ]);
 
         return $this->service->events->insert($this->calendarId, $event);
