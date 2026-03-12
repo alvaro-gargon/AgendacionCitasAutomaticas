@@ -2,7 +2,6 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 
-
 /**
  * CalendarModel | Clase Calendario de Google
  * 
@@ -24,11 +23,7 @@ class CalendarModel
     private $service;
     private $calendarId = 'alejandrodelahuerga@gmail.com';
 
-
-
-
-
-
+	
     /**
      * __construct 
      * 
