@@ -35,7 +35,7 @@
         <label for="alejandrohuerga">alejandrohuerga</label>
         <input type="checkbox" id="alejandrohuerga" name="correos[]" value="alejandrodelahuerga@gmail.com">
         <label for="webqinamical">webqinamical</label>
-        <input type="checkbox" id="webqinamical" name="correos[]" value="qinamical@gmail.com">
+        <input type="checkbox" id="webqinamical" name="correos[]" value="webqinamical@gmail.com">
         
     </p>
     <p>
