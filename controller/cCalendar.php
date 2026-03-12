@@ -14,12 +14,11 @@ class CalendarController {
     /**
      * procesarCita Función static que procesa los datos del formulario.
      *
-     * @return void
+     * @return void 
      * 
      * @author Alejandro De la Huerga
      * @since 12/03/2026
      */
-    
     public static function procesarCita() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Creamos un nuevo objeto de la clase CalendarModel.
@@ -34,5 +33,6 @@ class CalendarController {
                 echo "Error: " . $e->getMessage();
             }
         }
+        
     }
 }

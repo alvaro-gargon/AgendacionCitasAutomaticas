@@ -2,7 +2,6 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 
-
 /**
  * CalendarModel | Clase Calendario de Google
  * 
@@ -23,8 +22,7 @@ class CalendarModel {
     private $service;
     private $calendarId = 'alejandrodelahuerga@gmail.com';
 
-    
-    
+	
     /**
      * __construct 
      * 
@@ -43,13 +41,12 @@ class CalendarModel {
     }
 
     
-    
     /**
      * crearEvento
      * Recibe un array con los datos intriducidos en el formulario y los inserta en el calendario.
      *
-     * @param  mixed $datos | Array con los datos introducidos en el formulario.
-     * @return void
+     * @param  Array $datos | Array con los datos introducidos en el formulario.
+     * @return Object del evento que acabamos de crear.
      */
 
     public function crearEvento($datos) {
@@ -64,4 +61,25 @@ class CalendarModel {
 
         return $this->service->events->insert($this->calendarId, $event);
     }
+	
+	/**
+	 * getCalendarId
+	 *
+	 * @return  String $calendarId
+	*/
+
+	public function getCalendarId() {
+		return $this->calendarId;
+	}
+	
+	/**
+	 * setCalendarId
+	 *
+	 * @param String $value
+	 * @return void
+	 */
+
+	public function setCalendarId($value) {
+		$this->calendarId = $value;
+	}
 }
