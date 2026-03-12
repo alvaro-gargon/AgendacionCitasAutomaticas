@@ -8,7 +8,7 @@
  * Si el usuario le da al boton de hacer una cita con google
  */
  if(isset($_REQUEST['google'])){
-        $_SESSION['paginaEnCurso']='formularioCitas';
+        $_SESSION['paginaEnCurso']='formulario';
         header('Location: index.php');
         exit;
     }
