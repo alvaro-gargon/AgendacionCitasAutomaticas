@@ -1,3 +1,4 @@
+<button name="VOLVER">Volver</button>
 <form action="index.php?action=guardar" method="POST">
     <p>
         <label for="fechaInicio">Fecha inicio:</label>
@@ -39,7 +40,6 @@
         
     </p>
     <p>
-        <button name="CANCELAR">Cancelar</button>
         <button type="submit" name="GUARDAR">Guardar</button>
     </p>
 </form>
