@@ -16,7 +16,8 @@ require_once __DIR__ . '/../vendor/autoload.php';
  * @since 12/03/2026
  */
 
-class CalendarModel {
+class CalendarModel
+{
 
     // Variable la cual contiene todos los métodos de la API de Google Calendar (Crear,Editar,Borrar ...)
     private $service;
@@ -32,7 +33,8 @@ class CalendarModel {
      * @return void
      */
 
-    public function __construct() {
+    public function __construct()
+    {
         // Objeto encargado de la autenticación.
         $client = new Google_Client();
         $client->setAuthConfig(__DIR__ . '/../config/credentials.json');
@@ -49,7 +51,8 @@ class CalendarModel {
      * @since 12/03/2026
      */
 
-    public static function procesarCita() {
+    public static function procesarCita()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Creamos un nuevo objeto de la clase CalendarModel.
             $modelo = new CalendarModel();
@@ -63,9 +66,8 @@ class CalendarModel {
                 echo "Error: " . $e->getMessage();
             }
         }
-        
     }
-    
+
     /**
      * crearEvento
      * Recibe un array con los datos intriducidos en el formulario y los inserta en el calendario.
@@ -74,7 +76,8 @@ class CalendarModel {
      * @return Object del evento que acabamos de crear.
      */
 
-    public function crearEvento($datos) {
+    public function crearEvento($datos)
+    {
 
         $event = new Google_Service_Calendar_Event([
             'summary' => $datos['asunto'],
@@ -92,25 +95,27 @@ class CalendarModel {
 
         return $this->service->events->insert($this->calendarId, $event);
     }
-	
-	/**
-	 * getCalendarId
-	 *
-	 * @return  String $calendarId
-	*/
 
-	public function getCalendarId() {
-		return $this->calendarId;
-	}
-	
-	/**
-	 * setCalendarId
-	 *
-	 * @param String $value
-	 * @return void
-	 */
+    /**
+     * getCalendarId
+     *
+     * @return  String $calendarId
+     */
 
-	public function setCalendarId($value) {
-		$this->calendarId = $value;
-	}
+    public function getCalendarId()
+    {
+        return $this->calendarId;
+    }
+
+    /**
+     * setCalendarId
+     *
+     * @param String $value
+     * @return void
+     */
+
+    public function setCalendarId($value)
+    {
+        $this->calendarId = $value;
+    }
 }
