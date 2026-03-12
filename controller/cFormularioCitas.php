@@ -3,6 +3,10 @@
     *   Fecha: 11/03/2026
     *   Uso:  controlador del formulario*/
 
+use Google\Service\Calendar;
+
+    require_once './controller/cCalendar.php';
+    require_once __DIR__ . '/../models/Calendar.php';
     /**
      * Boton cancelar que te devuelve al login si el usuario decide no registrarse
      */
@@ -46,6 +50,7 @@
     
     
     if($entradaOK){
+        CalendarModel::procesarCita();
         $_SESSION['paginaEnCurso']='vistaPrincipal';
         header('Location: index.php');
         exit;
