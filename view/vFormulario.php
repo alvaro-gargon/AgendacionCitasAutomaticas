@@ -40,6 +40,6 @@
         
     </p>
     <p>
-        <button type="submit" name="GUARDAR">Guardar</button>
+        <button type="submit" name="GUARDAR"class="btn btn-success">Guardar</button>
     </p>
 </form>
