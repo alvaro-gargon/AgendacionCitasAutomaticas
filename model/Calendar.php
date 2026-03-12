@@ -1,24 +1,90 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 
+
+
+/**
+ * CalendarModel | Clase Calendario de Google
+ * 
+ * Para la realización de la siguiente clase se han consultado diferentes fuentes oficiales:
+ * 
+ * Google Calendar API: https://developers.google.com/workspace/calendar/api/guides/overview?hl=es-419
+ * Google APIs Client Library for PHP: https://github.com/googleapis/google-api-php-client
+ * Google API PHP Client Docs: https://googleapis.github.io/google-api-php-client/main/
+ * Documentación de Composer: https://getcomposer.org/doc/
+ * 
+ * @author Alejandro De la Huerga
+ * @since 12/03/2026
+ */
+
 class CalendarModel {
+
+    // Variable la cual contiene todos los métodos de la API de Google Calendar (Crear,Editar,Borrar ...)
     private $service;
-    private $calendarId = 'tu_correo@gmail.com';
+    private $calendarId = 'alejandrodelahuerga@gmail.com';
+
+	
+
+
+    
+    
+    /**
+     * __construct 
+     * 
+     * En el constructor utilizamos el archivo credentials.json el cual le indica
+     * a Google que estamos autorizados y es una aplicación autorizada.
+     *
+     * @return void
+     */
 
     public function __construct() {
+        // Objeto encargado de la autenticación.
         $client = new Google_Client();
         $client->setAuthConfig(__DIR__ . '/../config/credentials.json');
         $client->setScopes(Google_Service_Calendar::CALENDAR);
         $this->service = new Google_Service_Calendar($client);
     }
 
+    
+    /**
+     * crearEvento
+     * Recibe un array con los datos intriducidos en el formulario y los inserta en el calendario.
+     *
+     * @param  Array $datos | Array con los datos introducidos en el formulario.
+     * @return Object del evento que acabamos de crear.
+     */
+
     public function crearEvento($datos) {
+
         $event = new Google_Service_Calendar_Event([
             'summary' => $datos['asunto'],
             'description' => $datos['observaciones'],
+            // Formateamos las fechas al formato de Google Calendar (RFC3339) Ex: 2025-10-25T15:30:00.
             'start' => ['dateTime' => $datos['fecha'] . 'T' . $datos['hora'] . ':00'],
             'end' => ['dateTime' => $datos['fecha'] . 'T' . date('H:i', strtotime($datos['hora'] . ' +1 hour')) . ':00'],
         ]);
+
         return $this->service->events->insert($this->calendarId, $event);
     }
+	
+	/**
+	 * getCalendarId
+	 *
+	 * @return  String $calendarId
+	*/
+
+	public function getCalendarId() {
+		return $this->calendarId;
+	}
+	
+	/**
+	 * setCalendarId
+	 *
+	 * @param String $value
+	 * @return void
+	 */
+
+	public function setCalendarId($value) {
+		$this->calendarId = $value;
+	}
 }
