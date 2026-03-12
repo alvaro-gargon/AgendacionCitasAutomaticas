@@ -5,8 +5,7 @@
 
 use Google\Service\Calendar;
 
-    require_once './controller/cCalendar.php';
-    require_once __DIR__ . '/../models/Calendar.php';
+    require_once __DIR__ . '/../model/Calendar.php';
     /**
      * Boton cancelar que te devuelve al login si el usuario decide no registrarse
      */
