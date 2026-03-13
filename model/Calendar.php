@@ -13,6 +13,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
  * Documentación de Composer: https://getcomposer.org/doc/
  * 
  * @author Alejandro De la Huerga
+ * @author Alvaro Garcia Gonzalez
  * @since 12/03/2026
  */
 
@@ -78,19 +79,14 @@ class CalendarModel
 
     public function crearEvento($datos)
     {
-        echo 'Pero funcionan los echos?';
         $calendarioDestino = $datos['correos'];
         foreach ($calendarioDestino as $emailId) {
-            echo'Si ono';
             $aUsuarios = UsuarioPDO::buscaUsuarioPorCorreo($emailId);
         }
         foreach ($aUsuarios as $usuario) {
-            echo 'Deberia salir aqui coñooo';
-            echo $usuario->getSistema();
             switch ($usuario->getSistema()) {
 
                 case 'GOOGLE': {
-                    echo 'Te metiste a Google';
                         $eventData = [
                             'summary' => $datos['asunto'],
                             'description' => $datos['observaciones'],
