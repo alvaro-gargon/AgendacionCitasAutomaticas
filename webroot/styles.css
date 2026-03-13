@@ -1,6 +1,18 @@
-header{
-    background-color: #FF9436;
+camposFormulario, p{
+    margin: 3%;
+
+    & label{
+        margin-right:3%;
+    }
 }
-.obligatorio{
+input{
+    margin: 0.5%;
+    width: 70%;
+    border-radius: 20px;
+    border-style: none;
+    color: black;
+}
+
+.obligatorio{ 
     background-color: rgba(255, 166, 0, 0.555);
 }
