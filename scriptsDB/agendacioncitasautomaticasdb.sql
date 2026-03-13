@@ -20,9 +20,9 @@ SET time_zone = "+00:00";
 --
 -- Database: `agendacioncitasautomaticasdb`
 --
-CREATE Database 'agendacioncitasautomaticasdb';
+CREATE Database agendacioncitasautomaticasdb;
 -- --------------------------------------------------------
-
+USE agendacioncitasautomaticasdb;
 --
 -- Table structure for table `citas`
 --
