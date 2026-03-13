@@ -10,6 +10,10 @@ require_once 'core/231018libreriaValidacion.php';
 
 //aqui se incluyen todos los archivos del modelo
 require_once 'model/DBPDO.php';
+require_once 'model/Usuario.php';
+require_once 'model/AppError.php';
+require_once 'model/Calendar.php';
+require_once 'model/UsuarioPDO.php';
 
 //array para cargar los archivos del controlador
 $controller=[
