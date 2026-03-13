@@ -19,7 +19,8 @@ require_once 'model/UsuarioPDO.php';
 $controller=[
     'inicioPublico'=>'controller/cInicioPublico.php',
     'vistaPrincipal' => 'controller/cVistaPrincipal.php',
-    'formulario' => 'controller/cFormularioCitas.php'
+    'formulario' => 'controller/cFormularioCitas.php',
+    'error'=> 'controller/cError.php'
 ];
 
 //array para cargar los archivos de la vista
@@ -27,6 +28,7 @@ $view=[
     'layout' => 'view/vLayout.php',
     'inicioPublico' => 'view/vInicioPublico.php',
     'vistaPrincipal' => 'view/vVistaPrincipal.php',
-    'formulario' => 'view/vFormulario.php'
+    'formulario' => 'view/vFormulario.php',
+    'error'=> 'view/vError.php'
 ];
 ?>

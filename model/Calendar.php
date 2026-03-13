@@ -13,6 +13,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
  * Documentación de Composer: https://getcomposer.org/doc/
  * 
  * @author Alejandro De la Huerga
+ * @author Alvaro Garcia Gonzalez
  * @since 12/03/2026
  */
 
@@ -112,13 +113,11 @@ class CalendarModel
                                 throw new Exception("Error en el calendario $emailId: " . $e->getMessage());
                             }
                         }
+                        // Send updates manda un aviso a todos los invitados.
+                        return $idsCreados;
                     }
             }
         }
-
-
-        // Send updates manda un aviso a todos los invitados.
-        return $idsCreados;
     }
 
     /**
