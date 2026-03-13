@@ -83,33 +83,36 @@ class CalendarModel
             $aUsuarios = UsuarioPDO::buscaUsuarioPorCorreo($emailId);
         }
         foreach ($aUsuarios as $usuario) {
-            if ($usuario->getSistema() === 'GOOGLE') {
-                $eventData = [
-                    'summary' => $datos['asunto'],
-                    'description' => $datos['observaciones'],
-                    // Formateamos las fechas al formato de Google Calendar (RFC3339) Ex: 2025-10-25T15:30:00.
-                    'start' => [
-                        'dateTime' => $datos['fechaInicio'] . 'T' . $datos['horaInicio'] . ':00',
-                        'timeZone' => 'Europe/Madrid'
-                    ],
-                    'end' => [
-                        'dateTime' => $datos['fechaFin'] . 'T' . $datos['horaFin'] . ':00',
-                        'timeZone' => 'Europe/Madrid'
-                    ],
+            switch ($usuario->getSistema()) {
+
+                case 'GOOGLE': {
+                        $eventData = [
+                            'summary' => $datos['asunto'],
+                            'description' => $datos['observaciones'],
+                            // Formateamos las fechas al formato de Google Calendar (RFC3339) Ex: 2025-10-25T15:30:00.
+                            'start' => [
+                                'dateTime' => $datos['fechaInicio'] . 'T' . $datos['horaInicio'] . ':00',
+                                'timeZone' => 'Europe/Madrid'
+                            ],
+                            'end' => [
+                                'dateTime' => $datos['fechaFin'] . 'T' . $datos['horaFin'] . ':00',
+                                'timeZone' => 'Europe/Madrid'
+                            ],
 
 
-                    
-                ];
-                $event = new Google_Service_Calendar_Event($eventData);
-                $idsCreados = [];
-                foreach ($calendarioDestino as $emailId) {
-                    try {
-                        $resultado = $this->service->events->insert($emailId, $event);
-                        $idsCreados[] = $resultado->getId();
-                    } catch (Exception $e) {
-                        throw new Exception("Error en el calendario $emailId: " . $e->getMessage());
+
+                        ];
+                        $event = new Google_Service_Calendar_Event($eventData);
+                        $idsCreados = [];
+                        foreach ($calendarioDestino as $emailId) {
+                            try {
+                                $resultado = $this->service->events->insert($emailId, $event);
+                                $idsCreados[] = $resultado->getId();
+                            } catch (Exception $e) {
+                                throw new Exception("Error en el calendario $emailId: " . $e->getMessage());
+                            }
+                        }
                     }
-                }
             }
         }
 
