@@ -58,7 +58,7 @@
                 <label class="form-label fw-bold d-block mb-2 text-primary">Participantes</label>
                 <div class="form-check mb-2">
                     <input class="form-check-input" type="checkbox" id="alejandrohuerga" name="correos[]" value="alejandrodelahuerga@gmail.com">
-                    <label class="form-check-label" for="alejandrohuerga">Alejandro Huerga</label>
+                    <label class="form-check-label" for="alejandrohuerga">Alejandro De La Huerga</label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="webqinamical" name="correos[]" value="webqinamical@gmail.com">

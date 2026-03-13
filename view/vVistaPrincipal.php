@@ -5,7 +5,7 @@
                 Gestiona tus citas con <span class="text-primary">precisión.</span>
             </h1>
             <p class="lead text-muted mb-4">
-                Sincroniza tus calendarios de Qinamical y Qinetica de forma automática. 
+                Sincroniza tus calendarios de forma automática. 
                 Organiza reuniones, eventos y recordatorios en un solo lugar con nuestra interfaz inteligente.
             </p>
             
