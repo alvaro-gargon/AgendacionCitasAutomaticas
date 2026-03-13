@@ -1,45 +1,76 @@
-<button name="CANCELAR">Volver</button>
-<form action="index.php?action=guardar" method="POST">
-    <p>
-        <label for="fechaInicio">Fecha inicio:</label>
-        <input class="obligatorio" type="date" name="fechaInicio" value="<?php echo $aRespuestas['fechaInicio'] ?>">
-        <p class="error"><?php echo($aErrores['fechaInicio'])?></p>
-    </p>
-    <p>
-        <label for="fechaFin">Hora Inicio:</label>
-        <input class="obligatorio" type="time" name="horaInicio" value="<?php echo $aRespuestas['horaInicio'] ?>">
-        <p class="error"><?php echo($aErrores['horaInicio'])?></p>
-    </p>
-    <p>
-        <label for="fechaInicio">Fecha fin:</label>
-        <input class="obligatorio" type="date" name="fechaFin" value="<?php echo $aRespuestas['fechaFin'] ?>">
-        <p class="error"><?php echo($aErrores['fechaFin'])?></p>
-    </p>
-    <p>
-        <label for="fechaInicio">Hora fin:</label>
-        <input class="obligatorio" type="time" name="horaFin" value="<?php echo $aRespuestas['horaFin'] ?>">
-        <p class="error"><?php echo($aErrores['horaFin'])?></p>
-    </p>
-    <p>
-        <label for="fechaInicio">Asunto:</label>
-        <input class="obligatorio" type="text" name="asunto" value="<?php echo $aRespuestas['asunto'] ?>">
-        <p class="error"><?php echo($aErrores['asunto'])?></p>
-    </p>
-    <p>
-        <label for="fechaInicio">Observaciones:</label>
-        <textarea name="observaciones" value="<?php echo $aRespuestas['observaciones'] ?>"></textarea>
-        <p class="error"><?php echo($aErrores['observaciones'])?></p>
-    </p>
-    <p>
-        <label for="Usuarios">Usuarios: (Indica a que personas quieres agendarle la cita)</label></br>
 
-        <label for="alejandrohuerga">alejandrohuerga</label>
-        <input type="checkbox" id="alejandrohuerga" name="correos[]" value="alejandrodelahuerga@gmail.com">
-        <label for="webqinamical">webqinamical</label>
-        <input type="checkbox" id="webqinamical" name="correos[]" value="webqinamical@gmail.com">
+<div class="container d-flex justify-content-center my-5">
+    <form action="index.php?action=guardar" method="POST" class="card shadow-sm border-0 w-100" style="max-width: 600px;">
         
-    </p>
-    <p>
-        <button type="submit" name="GUARDAR"class="btn btn-success">Guardar</button>
-    </p>
-</form>
+        <div class="card-header bg-white border-bottom-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 fw-bold text-secondary">Nueva Cita</h5>
+            <button name="CANCELAR" class="btn btn-outline-secondary btn-sm">Volver</button>
+        </div>
+
+        <div id="camposFormulario" class="card-body p-4">
+            
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label for="fechaInicio" class="form-label fw-semibold">Fecha inicio</label>
+                    <input class="form-control <?php echo isset($aErrores['fechaInicio']) ? 'is-invalid' : ''; ?>" 
+                           type="date" id="fechaInicio" name="fechaInicio" value="<?php echo $aRespuestas['fechaInicio'] ?>">
+                    <div class="invalid-feedback"><?php echo $aErrores['fechaInicio'] ?></div>
+                </div>
+                <div class="col-md-6">
+                    <label for="horaInicio" class="form-label fw-semibold">Hora Inicio</label>
+                    <input class="form-control <?php echo isset($aErrores['horaInicio']) ? 'is-invalid' : ''; ?>" 
+                           type="time" id="horaInicio" name="horaInicio" value="<?php echo $aRespuestas['horaInicio'] ?>">
+                    <div class="invalid-feedback"><?php echo $aErrores['horaInicio'] ?></div>
+                </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label for="fechaFin" class="form-label fw-semibold">Fecha fin</label>
+                    <input class="form-control <?php echo isset($aErrores['fechaFin']) ? 'is-invalid' : ''; ?>" 
+                           type="date" id="fechaFin" name="fechaFin" value="<?php echo $aRespuestas['fechaFin'] ?>">
+                    <div class="invalid-feedback"><?php echo $aErrores['fechaFin'] ?></div>
+                </div>
+                <div class="col-md-6">
+                    <label for="horaFin" class="form-label fw-semibold">Hora fin</label>
+                    <input class="form-control <?php echo isset($aErrores['horaFin']) ? 'is-invalid' : ''; ?>" 
+                           type="time" id="horaFin" name="horaFin" value="<?php echo $aRespuestas['horaFin'] ?>">
+                    <div class="invalid-feedback"><?php echo $aErrores['horaFin'] ?></div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="asunto" class="form-label fw-semibold">Asunto</label>
+                <input class="form-control <?php echo isset($aErrores['asunto']) ? 'is-invalid' : ''; ?>" 
+                       type="text" id="asunto" name="asunto" placeholder="Motivo de la reunión" value="<?php echo $aRespuestas['asunto'] ?>">
+                <div class="invalid-feedback"><?php echo $aErrores['asunto'] ?></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="observaciones" class="form-label fw-semibold">Observaciones</label>
+                <textarea class="form-control" id="observaciones" name="observaciones" rows="3"><?php echo $aRespuestas['observaciones'] ?></textarea>
+                <?php if(!empty($aErrores['observaciones'])): ?>
+                    <small class="text-danger d-block mt-1"><?php echo $aErrores['observaciones'] ?></small>
+                <?php endif; ?>
+            </div>
+
+            <div class="mb-4 p-3 bg-light rounded border">
+                <label class="form-label fw-bold d-block mb-2 text-primary">Participantes</label>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="alejandrohuerga" name="correos[]" value="alejandrodelahuerga@gmail.com">
+                    <label class="form-check-label" for="alejandrohuerga">Alejandro Huerga</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="webqinamical" name="correos[]" value="webqinamical@gmail.com">
+                    <label class="form-check-label" for="webqinamical">Webqinamical</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer bg-white border-top-0 pb-4 px-4">
+            <button type="submit" name="GUARDAR" class="btn btn-primary w-100 py-2 fw-bold shadow-sm">
+                Confirmar y Guardar Cita
+            </button>
+        </div>
+    </form>
+</div>
