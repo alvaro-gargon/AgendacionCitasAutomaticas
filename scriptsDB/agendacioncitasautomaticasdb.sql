@@ -58,10 +58,10 @@ CREATE TABLE `citasagendas` (
 CREATE TABLE `usuarios` (
   `ID` int NOT NULL,
   `Correo` varchar(256) NOT NULL,
-  `Nombre` varchar(256) NOT NULL
+  `Nombre` varchar(256) NOT NULL,
+  'Sistema' varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-ALTER TABLE `usuarios` ADD `Sistema` ENUM('GOOGLE','IOS') NOT NULL AFTER `Nombre`;
 
 --
 -- Indexes for dumped tables
