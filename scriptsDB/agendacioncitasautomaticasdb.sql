@@ -20,9 +20,9 @@ SET time_zone = "+00:00";
 --
 -- Database: `agendacioncitasautomaticasdb`
 --
-CREATE Database 'agendacioncitasautomaticasdb';
+CREATE Database agendacioncitasautomaticasdb;
 -- --------------------------------------------------------
-
+USE agendacioncitasautomaticasdb;
 --
 -- Table structure for table `citas`
 --
@@ -60,6 +60,8 @@ CREATE TABLE `usuarios` (
   `Correo` varchar(256) NOT NULL,
   `Nombre` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+ALTER TABLE `usuarios` ADD `Sistema` ENUM('GOOGLE','IOS') NOT NULL AFTER `Nombre`;
 
 --
 -- Indexes for dumped tables
@@ -111,6 +113,9 @@ ALTER TABLE `citasagendas`
   ADD CONSTRAINT `Id_cita` FOREIGN KEY (`Id_cita`) REFERENCES `citas` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `Id_usuario` FOREIGN KEY (`Id_usuario`) REFERENCES `usuarios` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
+
+
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
