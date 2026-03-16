@@ -26,7 +26,7 @@ class UsuarioPDO {
         $aUsuario = [];
         //si hay registro, crea el objeto departamento
         while ($registro = $resultado->fetchObject()) {
-            $aUsuario = new Usuario(
+            $aUsuario[] = new Usuario(
                     $registro->Correo,
                     $registro->Nombre,
                     $registro->Sistema,
