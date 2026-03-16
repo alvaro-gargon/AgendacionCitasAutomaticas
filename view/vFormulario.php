@@ -64,6 +64,14 @@
                     <input class="form-check-input" type="checkbox" id="webqinamical" name="correos[]" value="webqinamical@gmail.com">
                     <label class="form-check-label" for="webqinamical">Webqinamical</label>
                 </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="alvarogargon" name="correos[]" value="alvaro.gargon.4@educa.jcyl.es">
+                    <label class="form-check-label" for="alvarogargon">Alvaro Garcia</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="practicas" name="correos[]" value="practicasenlb@hotmail.com">
+                    <label class="form-check-label" for="practicas">Practicas</label>
+                </div>
             </div>
         </div>
 

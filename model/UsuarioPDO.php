@@ -10,9 +10,9 @@
  */
 class UsuarioPDO {
     /**
-     * Funcion que usara un codigo de departamento dado para busacar un departamento unico
-     * @param  string $codDepartamento , codigo que usaremos para buscar el departamento
-     * @return Departamento $oDepartamento, devuelve un objeto departamento, ya sea con informacion o con valor null si ha habido algun error
+     * Funcion que usara un correo para busacar un usuario unico
+     * @param  string $correo , codigo que usaremos para buscar el departamento
+     * @return array $oUsuarios, devuelve un array con los objetos usuarios correspondientes
      */
     public static function buscaUsuarioPorCorreo($correo) {
         //consulta sql para seleccionar todos los datos del departamento
@@ -23,16 +23,16 @@ class UsuarioPDO {
                 CONSULTA;
         $resultado = DBPDO::ejecutaConsulta($consultaCorreo);
 
-        $aUsuario = [];
+        $aUsuarios = [];
         //si hay registro, crea el objeto departamento
         while ($registro = $resultado->fetchObject()) {
-            $aUsuario[] = new Usuario(
+            $aUsuarios[] = new Usuario(
                     $registro->Correo,
                     $registro->Nombre,
                     $registro->Sistema,
             );
         }
-        return $aUsuario;
+        return $aUsuarios;
     }
 }
 
