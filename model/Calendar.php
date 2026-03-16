@@ -87,6 +87,10 @@ class CalendarModel
         foreach ($aUsuarios as $usuario) {
             switch ($usuario->getSistema()) {
 
+                case 'APPLE': {
+                    
+                }
+
                 case 'GOOGLE': {
                         $eventData = [
                             'summary' => $datos['asunto'],
@@ -116,7 +120,7 @@ class CalendarModel
                         }
                         // Send updates manda un aviso a todos los invitados.
                         return $idsCreados;
-                    }
+                }
                 case 'OUTLOOK': {
                         $tenantId = "400bc7a3-ff8b-4be9-9791-b00b7afff0b5";
                         $clientId = "3dcac8b3-d98d-4619-a691-c05da5f1e0db";
@@ -230,7 +234,7 @@ class CalendarModel
                         } else {
                             return null; // Si ocurre un error
                         }
-                    }
+                }
             }
         }
     }
