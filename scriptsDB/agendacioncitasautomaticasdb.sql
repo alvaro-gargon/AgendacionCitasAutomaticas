@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 12, 2026 at 12:43 PM
+-- Generation Time: Mar 16, 2026 at 10:33 AM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.30
 
@@ -11,6 +11,8 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+CREATE DATABASE IF NOT EXISTS agendacincitasautomaticasdb;
+USE agendacincitasautomaticasdb;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -20,9 +22,9 @@ SET time_zone = "+00:00";
 --
 -- Database: `agendacioncitasautomaticasdb`
 --
-CREATE Database agendacioncitasautomaticasdb;
+
 -- --------------------------------------------------------
-USE agendacioncitasautomaticasdb;
+
 --
 -- Table structure for table `citas`
 --
@@ -59,9 +61,18 @@ CREATE TABLE `usuarios` (
   `ID` int NOT NULL,
   `Correo` varchar(256) NOT NULL,
   `Nombre` varchar(256) NOT NULL,
-  'Sistema' varchar(32) NOT NULL
+  `Sistema` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `usuarios`
+--
+
+INSERT INTO `usuarios` (`ID`, `Correo`, `Nombre`, `Sistema`) VALUES
+(1, 'webqinamical@gmail.com', 'Webqinamical', 'GOOGLE'),
+(2, 'alejandrodelahuerga@gmail.com', 'Alejandro', 'GOOGLE'),
+(3, 'practicasenlb@hotmail.com', 'practicasenlb', 'OUTLOOK'),
+(4, 'alvaro.gargon.4@educa.jcyl.es', 'alvaro', 'OUTLOOK');
 
 --
 -- Indexes for dumped tables
@@ -100,7 +111,7 @@ ALTER TABLE `citas`
 -- AUTO_INCREMENT for table `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
@@ -113,9 +124,6 @@ ALTER TABLE `citasagendas`
   ADD CONSTRAINT `Id_cita` FOREIGN KEY (`Id_cita`) REFERENCES `citas` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `Id_usuario` FOREIGN KEY (`Id_usuario`) REFERENCES `usuarios` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
-
-
-
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
