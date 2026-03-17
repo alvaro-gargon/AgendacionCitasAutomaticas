@@ -78,6 +78,12 @@
                         Genuine Apple
                     </label>
                 </div>
+                <div class="form-check border-top pt-2 mt-2">
+                    <input class="form-check-input" type="checkbox" id="mailtrap" name="correos[]" value="practicasweb@qinamical.com">
+                    <label class="form-check-label" for="mailtrap">
+                        SoGo
+                    </label>
+                </div>
             </div>
         </div>
 

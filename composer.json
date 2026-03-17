@@ -1,7 +1,8 @@
 {
     "require": {
         "google/apiclient": "^2.15.0",
-        "phpmailer/phpmailer": "^7.0"
+        "phpmailer/phpmailer": "^7.0",
+        "sabre/dav": "^4.7"
     },
     "config": {
         "audit": {
