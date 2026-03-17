@@ -65,7 +65,7 @@ La siguiente infromación tendra que ver con la estructura de directorios de la 
 
 - **/view**: Todas las vistas de nuestra aplicación.
 
-- **/webrrot**: Contiene el archivo de estilos css y el directorio doc.
+- **/webroot**: Contiene el archivo de estilos css y el directorio doc.
 
 - **/doc**: Contiene el directorio images (Todas las imagenes que requiere nuestra aplicación) y el directorio Documentos.
 
@@ -77,7 +77,7 @@ La siguiente infromación tendra que ver con la estructura de directorios de la 
 
 ### AUTORES
 
-Esta aplicación ha sido realizada en igual procentaje de colaboración por [Alejandro De la Huerga Fernández](https://github.com/alejandrohuerga) y [Álvaro García Gordon](https://github.com/alvaro-gargon) durante su periodo en las prácticas del ciclo Superior de Desarrollo de Aplicaciones Web en la empresa Qinamical y Qinetical (La Bañeza).
+Esta aplicación ha sido realizada en igual procentaje de colaboración por [Alejandro De la Huerga Fernández](https://github.com/alejandrohuerga) y [Álvaro García González](https://github.com/alvaro-gargon) durante su periodo en las prácticas del ciclo Superior de Desarrollo de Aplicaciones Web en la empresa Qinamical y Qinetical (La Bañeza).
 
 
 
