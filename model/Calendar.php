@@ -85,186 +85,137 @@ class CalendarModel
 
     public function crearEvento($datos)
     {
-        
 
         $calendarioDestino = $datos['correos'];
         foreach ($calendarioDestino as $emailId) {
             $aUsuarios = UsuarioPDO::buscaUsuarioPorCorreo($emailId);
-        }
-        foreach ($aUsuarios as $usuario) {
-            switch ($usuario->getSistema()) {
-                case 'OUTLOOK':
-                case 'APPLE': {
-                    $mail = new PHPMailer(true);
-                    try {
-                        $mail->isSMTP();
-                        $mail->SMTPDebug  = 0; // Ponlo en 0 cuando funcione, 2 para depurar
-                        $mail->Host       = 'smtp.qinamical.com';
-                        $mail->SMTPAuth   = true;
-                        $mail->Username   = 'practicasweb@qinamical.com';
-                        $mail->Password   = '9B9HkeLyd4X3&Dh%';
-                        $mail->Port       = 587;
-                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-
-                        $mail->setFrom('practicasweb@qinamical.com', 'Sistema de Citas');
-                        $mail->addAddress($usuario->getCorreo());
-
-                        // ── Generar contenido del .ics ──────────────────────────────
-                        $uid       = uniqid() . '@qinamical.com';
-                        $ahora     = gmdate('Ymd\THis\Z');
-                        $inicio    = date('Ymd\THis', strtotime($datos['fechaInicio'] . ' ' . $datos['horaInicio']));
-                        $fin       = date('Ymd\THis', strtotime($datos['fechaFin']   . ' ' . $datos['horaFin']));
-                        $asunto    = $datos['asunto'];
-                        $notas     = $datos['observaciones'] ?? '';
-
-                        $icsContent = "BEGIN:VCALENDAR\r\n"
-                            . "VERSION:2.0\r\n"
-                            . "PRODID:-//QinamicalCitas//ES\r\n"
-                            . "CALSCALE:GREGORIAN\r\n"
-                            . "METHOD:REQUEST\r\n"
-                            . "BEGIN:VEVENT\r\n"
-                            . "UID:{$uid}\r\n"
-                            . "DTSTAMP:{$ahora}\r\n"
-                            . "DTSTART:{$inicio}\r\n"
-                            . "DTEND:{$fin}\r\n"
-                            . "SUMMARY:{$asunto}\r\n"
-                            . "DESCRIPTION:{$notas}\r\n"
-                            . "END:VEVENT\r\n"
-                            . "END:VCALENDAR\r\n";
-                        // ───────────────────────────────────────────────────────────
-
-                        $mail->addStringAttachment(
-                            $icsContent,
-                            'invite.ics',
-                            'base64',
-                            'text/calendar; charset=utf-8; method=REQUEST; name=invite.ics'
-                        );
-
-                        // Añade también esta cabecera extra
-                        $mail->addCustomHeader('Content-Class', 'urn:content-classes:calendarmessage');
-
-                        $mail->isHTML(false);
-                        $mail->Subject = 'Nueva cita: ' . $asunto;
-                        $mail->Body    = "Se ha programado una nueva cita.\n\nAsunto: {$asunto}\nInicio: {$datos['fechaInicio']} {$datos['horaInicio']}\nFin: {$datos['fechaFin']} {$datos['horaFin']}\nObservaciones: {$notas}";
-
-                        $mail->send();
-                        echo "Correo enviado con éxito a " . $usuario->getCorreo() . "<br>";
-
-                    } catch (Exception $e) {
-                        echo "<h1>Error Crítico de Envío</h1>";
-                        echo "Mensaje de PHPMailer: " . $mail->ErrorInfo . "<br>";
-                        echo "Excepción de PHP: " . $e->getMessage() . "<br>";
-                        exit();
-                    }
-                }
-                
-                case 'GOOGLE': {
-                        $eventData = [
-                            'summary' => $datos['asunto'],
-                            'description' => $datos['observaciones'],
-                            // Formateamos las fechas al formato de Google Calendar (RFC3339) Ex: 2025-10-25T15:30:00.
-                            'start' => [
-                                'dateTime' => $datos['fechaInicio'] . 'T' . $datos['horaInicio'] . ':00',
-                                'timeZone' => 'Europe/Madrid'
-                            ],
-                            'end' => [
-                                'dateTime' => $datos['fechaFin'] . 'T' . $datos['horaFin'] . ':00',
-                                'timeZone' => 'Europe/Madrid'
-                            ],
-                        ];
-
-                        $event = new Google_Service_Calendar_Event($eventData);
-                        $idsCreados = [];
-                        foreach ($calendarioDestino as $emailId) {
-                            try {
-                                $resultado = $this->service->events->insert($emailId, $event);
-                                $idsCreados[] = $resultado->getId();
-                            } catch (Exception $e) {
-                                throw new Exception("Error en el calendario $emailId: " . $e->getMessage());
-                            }
-                        }
-                        // Send updates manda un aviso a todos los invitados.
-                        return $idsCreados;
-                }
-                
-                /**
-                 * Caso SOGO : Mediante este caso la empresa podrá agendar citas en el calendario
-                 * del proveedor de correo electrónico SoGo que tiene Calendario implementado.
-                 * 
-                 * Se usara el protocolo CalDav el cual permitira agendar citas sin necesidad de invitación.
-                 * Líbreria en uso de PHP: sabre/dav.
-                 * Se enviara el archivo .ics directamente al servidor para no tener que aceptar la invitación
-                 * mediante un comando PUT.
-                 * 
-                 * La implementación se puede realizar de dos maneras diferentes:
-                 * 1. Mediante la obtención de los credenciales de los usuarios.
-                 * 2. La utilización de una cuenta administrador con permisos.
-                 * 
-                 * @author Alejandro De la Huerga | Álvaro García
-                 * @since 17/03/2026
-                 * @version 1.0.0
-                 */
-
-                case "SOGO" : {
-                    // 1. Datos de acceso
-                    $settings = [
-                        'baseUri'  => 'https://webmail.qinamical.com/SOGo/dav/', // Añadido /SOGo/dav/ que es el estándar
-                        'userName' => $usuario->getCorreo(),
-                        'password' => '9B9HkeLyd4X3&Dh%',
-                    ];
-
-                    $client = new \Sabre\DAV\Client($settings);
-
-                    try {
-                        // 2. Generar el identificador único
-                        $uid = uniqid() . '-' . bin2hex(random_bytes(8));
-                        $filename = $uid . ".ics";
-
-                        // 3. Crear el formato ICS
-                        // Eliminamos el ATTENDEE para que no genere una invitación pendiente.
-                        // Al ser solo ORGANIZER, entra como cita directa.
-                        $vcalendar = new \Sabre\VObject\Component\VCalendar([
-                            'VEVENT' => [
-                                'SUMMARY'     => $datos['asunto'],
-                                'DTSTART'     => new DateTime($datos['fechaInicio'] . ' ' . $datos['horaInicio']),
-                                'DTEND'       => new DateTime($datos['fechaFin'] . ' ' . $datos['horaFin']),
-                                'DESCRIPTION' => $datos['observaciones'],
-                                'UID'         => $uid,
-                                'DTSTAMP'     => new DateTime('now', new DateTimeZone('UTC')),
-                                'ORGANIZER'   => 'mailto:' . $usuario->getCorreo(),
-                                'STATUS'      => 'CONFIRMED',
-                                'SEQUENCE'    => 0,
-                                'TRANSP'      => 'OPAQUE', 
-                                'CLASS'       => 'PUBLIC',
-                            ]
-                        ]);
-
-                        // SOGo espera: /SOGo/dav/usuario@dominio.com/Calendar/personal/archivo.ics
-                        // Como el baseUri ya tiene el prefijo, aquí usamos la ruta relativa
-                        $urlCalendario = $usuario->getCorreo() . '/Calendar/personal/' . $filename;
-
-                        // 5. Ejecutar la subida con Header de contenido específico
-                        $headers = [
-                            'Content-Type' => 'text/calendar; charset=utf-8'
-                        ];
-
-                        $response = $client->request('PUT', $urlCalendario, $vcalendar->serialize(), $headers);
-
-                        if ($response['statusCode'] == 201 || $response['statusCode'] == 204) {
-                            echo "Éxito: Cita insertada directamente en el calendario de " . $usuario->getCorreo();
-                        } else {
-                            echo "Error: SOGo devolvió código " . $response['statusCode'];
-                        }
-
-                    } catch (\Exception $e) {
-                        echo "Error de conexión SOGo: " . $e->getMessage();
-                    }
-                    break;
-                }
+            
+            if (!$aUsuarios) {
+                echo "⚠️ No se encontró el usuario en la BD: $emailId <br>";
+                continue;
             }
 
+            foreach ($aUsuarios as $usuario) {
+                $sistema = strtoupper($usuario->getSistema());
+
+                switch ($sistema) {
+                    case 'GOOGLE':
+                        try {
+                            $eventData = [
+                                'summary' => $datos['asunto'],
+                                'description' => $datos['observaciones'] ?? '',
+                                'start' => [
+                                    'dateTime' => $datos['fechaInicio'] . 'T' . $datos['horaInicio'] . ':00',
+                                    'timeZone' => 'Europe/Madrid'
+                                ],
+                                'end' => [
+                                    'dateTime' => $datos['fechaFin'] . 'T' . $datos['horaFin'] . ':00',
+                                    'timeZone' => 'Europe/Madrid'
+                                ],
+                            ];
+                            $event = new Google_Service_Calendar_Event($eventData);
+                            // Insertamos usando el email del usuario actual
+                            $resultado = $this->service->events->insert($usuario->getCorreo(), $event);
+                            $idsCreadosGoogle[] = $resultado->getId();
+                            echo "✅ Google: Evento creado para " . $usuario->getCorreo() . "<br>";
+                        } catch (Exception $e) {
+                            echo "❌ Google Error ($emailId): " . $e->getMessage() . "<br>";
+                        }
+                        break;
+
+                    case 'SOGO':
+                        $this->procesarSogo($usuario, $datos);
+                        break;
+
+                    case 'OUTLOOK':
+                    case 'APPLE':
+                        $this->procesarEnvioEmail($usuario, $datos);
+                        break;
+
+                    default:
+                        echo "❓ Sistema desconocido para " . $usuario->getCorreo() . "<br>";
+                        break;
+                }
+            }
         }
-            
+        return $idsCreadosGoogle;
+    }
+
+    /**
+     * Lógica específica para insertar en SOGo vía CalDAV
+     */
+    private function procesarSogo($usuario, $datos) {
+        $settings = [
+            'baseUri'  => 'https://webmail.qinamical.com/SOGo/dav/',
+            'userName' => $usuario->getCorreo(),
+            'password' => '9B9HkeLyd4X3&Dh%', // Nota: Idealmente esto debería venir de la BD
+        ];
+        $client = new \Sabre\DAV\Client($settings);
+        try {
+            $uid = uniqid() . '-' . bin2hex(random_bytes(8));
+            $vcalendar = new \Sabre\VObject\Component\VCalendar([
+                'VEVENT' => [
+                    'SUMMARY'     => $datos['asunto'],
+                    'DTSTART'     => new DateTime($datos['fechaInicio'] . ' ' . $datos['horaInicio']),
+                    'DTEND'       => new DateTime($datos['fechaFin'] . ' ' . $datos['horaFin']),
+                    'DESCRIPTION' => $datos['observaciones'],
+                    'UID'         => $uid,
+                    'DTSTAMP'     => new DateTime('now', new DateTimeZone('UTC')),
+                    'ORGANIZER'   => 'mailto:' . $usuario->getCorreo(),
+                    'STATUS'      => 'CONFIRMED',
+                ]
+            ]);
+
+            $url = $usuario->getCorreo() . '/Calendar/personal/' . $uid . ".ics";
+            $response = $client->request('PUT', $url, $vcalendar->serialize(), ['Content-Type' => 'text/calendar']);
+
+            if ($response['statusCode'] == 201 || $response['statusCode'] == 204) {
+                echo "✅ SOGo: Cita insertada para " . $usuario->getCorreo() . "<br>";
+            } else {
+                echo "❌ SOGo Error (" . $response['statusCode'] . ") para " . $usuario->getCorreo() . "<br>";
+            }
+        } catch (Exception $e) {
+            echo "❌ SOGo Excepción (" . $usuario->getCorreo() . "): " . $e->getMessage() . "<br>";
+        }
+    }
+
+    /**
+     * Lógica para enviar invitación .ics vía PHPMailer
+     */
+    private function procesarEnvioEmail($usuario, $datos) {
+        $mail = new PHPMailer(true);
+        try {
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.qinamical.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'practicasweb@qinamical.com';
+            $mail->Password   = '9B9HkeLyd4X3&Dh%';
+            $mail->Port       = 587;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+
+            $mail->setFrom('practicasweb@qinamical.com', 'Sistema de Citas');
+            $mail->addAddress($usuario->getCorreo());
+
+            $uid    = uniqid() . '@qinamical.com';
+            $ahora  = gmdate('Ymd\THis\Z');
+            $inicio = date('Ymd\THis', strtotime($datos['fechaInicio'] . ' ' . $datos['horaInicio']));
+            $fin    = date('Ymd\THis', strtotime($datos['fechaFin']   . ' ' . $datos['horaFin']));
+
+            $icsContent = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nMETHOD:REQUEST\r\nBEGIN:VEVENT\r\n"
+                        . "UID:{$uid}\r\nDTSTAMP:{$ahora}\r\nDTSTART:{$inicio}\r\nDTEND:{$fin}\r\n"
+                        . "SUMMARY:{$datos['asunto']}\r\nDESCRIPTION:{$datos['observaciones']}\r\n"
+                        . "END:VEVENT\r\nEND:VCALENDAR\r\n";
+
+            $mail->addStringAttachment($icsContent, 'invite.ics', 'base64', 'text/calendar; charset=utf-8; method=REQUEST');
+            $mail->addCustomHeader('Content-Class', 'urn:content-classes:calendarmessage');
+            $mail->Subject = 'Nueva cita: ' . $datos['asunto'];
+            $mail->Body    = "Se ha programado una nueva cita para el " . $datos['fechaInicio'];
+
+            $mail->send();
+            echo "✅ Email: Invitación enviada a " . $usuario->getCorreo() . "<br>";
+        } catch (Exception $e) {
+            echo "❌ Email Error (" . $usuario->getCorreo() . "): " . $mail->ErrorInfo . "<br>";
+        }
     }
         
 
