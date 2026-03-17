@@ -79,8 +79,8 @@
                     </label>
                 </div>
                 <div class="form-check border-top pt-2 mt-2">
-                    <input class="form-check-input" type="checkbox" id="mailtrap" name="correos[]" value="practicasweb@qinamical.com">
-                    <label class="form-check-label" for="mailtrap">
+                    <input class="form-check-input" type="checkbox" id="mailtrap2" name="correos[]" value="practicasweb@qinamical.com">
+                    <label class="form-check-label" for="mailtrap2">
                         SoGo
                     </label>
                 </div>

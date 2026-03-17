@@ -93,7 +93,7 @@ class CalendarModel
         }
         foreach ($aUsuarios as $usuario) {
             switch ($usuario->getSistema()) {
-
+                case 'OUTLOOK':
                 case 'APPLE': {
                     $mail = new PHPMailer(true);
                     try {
@@ -157,7 +157,7 @@ class CalendarModel
                         exit();
                     }
                 }
-                /*
+                
                 case 'GOOGLE': {
                         $eventData = [
                             'summary' => $datos['asunto'],
@@ -186,7 +186,7 @@ class CalendarModel
                         // Send updates manda un aviso a todos los invitados.
                         return $idsCreados;
                 }
-                */
+                
                 /**
                  * Caso SOGO : Mediante este caso la empresa podrá agendar citas en el calendario
                  * del proveedor de correo electrónico SoGo que tiene Calendario implementado.
