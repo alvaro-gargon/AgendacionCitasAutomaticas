@@ -1,10 +1,11 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
-use Mailtrap\MailtrapClient;
-use Mailtrap\Entity\Email;
-use Mailtrap\Entity\Address;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+    use Sabre\VObject; // Para manipular el archivo .ics fácilmente
+    use Sabre\DAV\Client; // Para la conexión con SOGo
+    use Mailtrap\MailtrapClient;
+    use Mailtrap\Entity\Email;
+    use Mailtrap\Entity\Address;
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
 
 /**
  * CalendarModel | Clase Calendario de Google
@@ -156,7 +157,7 @@ class CalendarModel
                         exit();
                     }
                 }
-                
+                /*
                 case 'GOOGLE': {
                         $eventData = [
                             'summary' => $datos['asunto'],
@@ -185,7 +186,81 @@ class CalendarModel
                         // Send updates manda un aviso a todos los invitados.
                         return $idsCreados;
                 }
+                */
+                /**
+                 * Caso SOGO : Mediante este caso la empresa podrá agendar citas en el calendario
+                 * del proveedor de correo electrónico SoGo que tiene Calendario implementado.
+                 * 
+                 * Se usara el protocolo CalDav el cual permitira agendar citas sin necesidad de invitación.
+                 * Líbreria en uso de PHP: sabre/dav.
+                 * Se enviara el archivo .ics directamente al servidor para no tener que aceptar la invitación
+                 * mediante un comando PUT.
+                 * 
+                 * La implementación se puede realizar de dos maneras diferentes:
+                 * 1. Mediante la obtención de los credenciales de los usuarios.
+                 * 2. La utilización de una cuenta administrador con permisos.
+                 * 
+                 * @author Alejandro De la Huerga | Álvaro García
+                 * @since 17/03/2026
+                 * @version 1.0.0
+                 */
 
+                case "SOGO" : {
+                    // 1. Datos de acceso
+                    $settings = [
+                        'baseUri'  => 'https://webmail.qinamical.com/SOGo/dav/', // Añadido /SOGo/dav/ que es el estándar
+                        'userName' => $usuario->getCorreo(),
+                        'password' => '9B9HkeLyd4X3&Dh%',
+                    ];
+
+                    $client = new \Sabre\DAV\Client($settings);
+
+                    try {
+                        // 2. Generar el identificador único
+                        $uid = uniqid() . '-' . bin2hex(random_bytes(8));
+                        $filename = $uid . ".ics";
+
+                        // 3. Crear el formato ICS
+                        // Eliminamos el ATTENDEE para que no genere una invitación pendiente.
+                        // Al ser solo ORGANIZER, entra como cita directa.
+                        $vcalendar = new \Sabre\VObject\Component\VCalendar([
+                            'VEVENT' => [
+                                'SUMMARY'     => $datos['asunto'],
+                                'DTSTART'     => new DateTime($datos['fechaInicio'] . ' ' . $datos['horaInicio']),
+                                'DTEND'       => new DateTime($datos['fechaFin'] . ' ' . $datos['horaFin']),
+                                'DESCRIPTION' => $datos['observaciones'],
+                                'UID'         => $uid,
+                                'DTSTAMP'     => new DateTime('now', new DateTimeZone('UTC')),
+                                'ORGANIZER'   => 'mailto:' . $usuario->getCorreo(),
+                                'STATUS'      => 'CONFIRMED',
+                                'SEQUENCE'    => 0,
+                                'TRANSP'      => 'OPAQUE', 
+                                'CLASS'       => 'PUBLIC',
+                            ]
+                        ]);
+
+                        // SOGo espera: /SOGo/dav/usuario@dominio.com/Calendar/personal/archivo.ics
+                        // Como el baseUri ya tiene el prefijo, aquí usamos la ruta relativa
+                        $urlCalendario = $usuario->getCorreo() . '/Calendar/personal/' . $filename;
+
+                        // 5. Ejecutar la subida con Header de contenido específico
+                        $headers = [
+                            'Content-Type' => 'text/calendar; charset=utf-8'
+                        ];
+
+                        $response = $client->request('PUT', $urlCalendario, $vcalendar->serialize(), $headers);
+
+                        if ($response['statusCode'] == 201 || $response['statusCode'] == 204) {
+                            echo "Éxito: Cita insertada directamente en el calendario de " . $usuario->getCorreo();
+                        } else {
+                            echo "Error: SOGo devolvió código " . $response['statusCode'];
+                        }
+
+                    } catch (\Exception $e) {
+                        echo "Error de conexión SOGo: " . $e->getMessage();
+                    }
+                    break;
+                }
             }
 
         }
